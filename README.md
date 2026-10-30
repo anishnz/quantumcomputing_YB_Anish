@@ -22,7 +22,10 @@ This repository holds the code, results and report for Assessment 2. Each task h
 ### Option A — Google Colab (nothing to install) ⭐ easiest
 1. Click the **Open in Colab** badge in the **All tasks** row above.
 2. In Colab, click **Runtime → Run all**.
-3. Wait about 3–4 minutes. The notebook downloads this repository, installs Cirq and Qiskit, runs **Tasks 1–4 together**, shows every result and chart, and runs the alternative code.
+3. Wait about 4–5 minutes. The notebook downloads this repository, installs Cirq and Qiskit, runs **Tasks 1–4 together**, shows every result and chart, and runs the alternative code.
+4. To keep your own copy, click **Copy to Drive** — it is saved in *My Drive → Colab Notebooks* as a new Colab project.
+
+✅ Tested in Colab on 31 October 2026: all four tasks finished without errors (Task 4 takes about 160 s on Colab's free CPU).
 
 To run **one task**, click that task's badge, then **Runtime → Run all**. Its first code cell downloads the project automatically.
 
