@@ -1,0 +1,13 @@
+# Python / Jupyter
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+venv/
+*.flag
+run_log.txt
+# OS / editors
+.DS_Store
+Thumbs.db
+~$*.docx
+.vscode/

@@ -1,0 +1,5 @@
+image,label,used for,Quantum P(bar),Local-A P(bar),Local-B P(bar),Local-C P(bar)
+[1 0 1 0],0,train,0.0,0.0,0.415,0.166
+[0 1 0 1],0,train,0.0,0.0,0.156,0.105
+[1 1 0 0],1,test,1.0,1.0,0.057,0.171
+[0 0 1 1],1,train,1.0,1.0,0.683,0.654

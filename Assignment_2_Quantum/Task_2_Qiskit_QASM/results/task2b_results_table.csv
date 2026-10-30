@@ -1,0 +1,5 @@
+String c3c2c1c0,A,B,SUM,CARRY,Correct adder row?,Theory P,Counts,Measured P
+0000,0,0,0,0,True,0.25,250,0.25
+0111,1,1,0,1,True,0.25,244,0.244
+1001,1,0,1,0,True,0.25,247,0.247
+1010,0,1,1,0,True,0.25,259,0.259

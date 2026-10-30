@@ -1,0 +1,15 @@
+# MSE802 Assessment 2 - Python packages (tested with Python 3.12 / 3.13, October 2026)
+# Install with:   pip install -r requirements.txt
+cirq-core==1.7.0          # Task 1: build the Bell state with Google Cirq
+qiskit==2.6.1             # Tasks 2-4: circuits, QASM import/export, drawings
+qiskit-aer==0.18.2        # local simulator: game Measure button and offline fallback
+numpy>=1.26               # arrays, state vectors
+scipy>=1.11               # Nelder-Mead optimiser in Task 4
+pandas>=2.1               # result tables
+matplotlib>=3.8           # charts and circuit drawings
+pylatexenc>=2.10          # needed by Qiskit's 'mpl' circuit drawer
+requests>=2.31            # HTTP calls to the Quokka device
+ipywidgets>=8.1           # Task 3 game buttons
+notebook>=7.0             # Jupyter (to open the notebooks)
+nbconvert>=7.16           # run_all.bat executes the notebooks automatically
+ipykernel>=6.29           # Python kernel for Jupyter / VS Code
