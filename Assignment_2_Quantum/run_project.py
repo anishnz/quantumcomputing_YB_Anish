@@ -49,8 +49,34 @@ def quokka_status():
         print("  -> circuits will run on the local simulator and be labelled LOCAL SIMULATOR")
 
 
+KERNEL = "mse802-project"          # Jupyter kernel that uses THIS Python (same packages as the runner)
+PACKAGES = {"cirq": "cirq-core", "qiskit": "qiskit", "qiskit_aer": "qiskit-aer", "pylatexenc": "pylatexenc",
+            "ipykernel": "ipykernel", "nbconvert": "nbconvert", "ipywidgets": "ipywidgets"}
+_ENV_READY = False
+
+
+def ensure_environment():
+    """Install missing packages into this Python and register a kernel that points to it.
+
+    Without this, a notebook could be executed by a different Python (for example in Google
+    Colab), which would not have Cirq/Qiskit installed and would fail with ModuleNotFoundError.
+    """
+    global _ENV_READY
+    if _ENV_READY:
+        return
+    import importlib.util
+    missing = [pip_name for module, pip_name in PACKAGES.items() if importlib.util.find_spec(module) is None]
+    if missing:
+        print("Installing missing packages:", ", ".join(missing))
+        subprocess.run([sys.executable, "-m", "pip", "install", "-q"] + missing, check=True)
+    from ipykernel.kernelspec import install                 # writes kernel.json -> [sys.executable, ...]
+    install(user=True, kernel_name=KERNEL, display_name="Python (MSE802 project)")
+    _ENV_READY = True
+
+
 def run_notebook(task_id):
     """Execute one notebook in its own folder, then export it to HTML."""
+    ensure_environment()
     import nbformat
     from nbconvert import HTMLExporter
     from nbconvert.preprocessors import ExecutePreprocessor
@@ -60,7 +86,7 @@ def run_notebook(task_id):
     line(); print(f"RUNNING {title}\n  notebook: {folder}/{name}"); line("-")
     nb = nbformat.read(path, as_version=4)
     start = time.perf_counter()
-    ExecutePreprocessor(timeout=3600, kernel_name="python3").preprocess(nb, {"metadata": {"path": str(path.parent)}})
+    ExecutePreprocessor(timeout=3600, kernel_name=KERNEL).preprocess(nb, {"metadata": {"path": str(path.parent)}})
     nbformat.write(nb, path)                                 # keep the outputs inside the notebook
     HTML_DIR.mkdir(exist_ok=True)
     html, _ = HTMLExporter().from_notebook_node(nb)
@@ -103,6 +129,7 @@ def summarise(task_id):
 
 
 def run_alternatives():
+    ensure_environment()
     for script in ALTERNATIVES:
         line(); print(f"ALTERNATIVE: {script}"); line("-")
         subprocess.run([sys.executable] + script.split(), cwd=ROOT, check=False)
