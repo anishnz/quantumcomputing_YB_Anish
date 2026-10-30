@@ -13,7 +13,7 @@ This repository holds the code, results and report for Assessment 2. Each task h
 | **Task 4** | **Quantum ML** classifier: iteration logging, 2 graphs, quantum vs local comparison | [`Task4_Quantum_ML_Modified.ipynb`](Assignment_2_Quantum/Task_4_Quantum_ML/Task4_Quantum_ML_Modified.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/anishnz/quantumcomputing_YB_Anish/blob/main/Assignment_2_Quantum/Task_4_Quantum_ML/Task4_Quantum_ML_Modified.ipynb) |
 | **All tasks** | Runs Tasks 1–4 together, shows results, runs the alternative code | [`Colab_Run_All_Tasks.ipynb`](Assignment_2_Quantum/Colab_Run_All_Tasks.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/anishnz/quantumcomputing_YB_Anish/blob/main/Assignment_2_Quantum/Colab_Run_All_Tasks.ipynb) |
 
-📄 **Report:** [`Assignment_2_Quantum/Report/Assignment2.pdf`](Assignment_2_Quantum/Report/Assignment2.pdf) (Word version: `Assignment2.docx`)
+📄 **Report:** [`Assignment_2_Quantum/Report/Assignment2.pdf`](Assignment_2_Quantum/Report/Assignment2.pdf) (Word version: `Assignment2.docx`) · Task Word documents: [Task 3](Assignment_2_Quantum/Task_3_Quantum_TicTacToe/Task3_Report_Quantum_TicTacToe.pdf), [Task 4](Assignment_2_Quantum/Task_4_Quantum_ML/Task4_Report_Quantum_ML.pdf) · 📦 Submission ZIP: [`MSE802_Assignment2_Shrestha_Tiwari.zip`](MSE802_Assignment2_Shrestha_Tiwari.zip)
 
 ---
 
@@ -107,6 +107,10 @@ ALL FOUR TASKS FINISHED. Open outputs_html/ to see every result.
 * Every task uses **1000 shots** (`SHOTS = 1000` at the top of each notebook).
 * If Quokka is **offline**, the same QASM runs on the Qiskit Aer simulator, and every result is labelled **`LOCAL SIMULATOR`** in the output and JSON files, so it is never presented as Quokka data.
 * On 31 October 2026 the Quokka endpoint was offline (`ERR_NGROK_3200`), so the saved results in this repository are labelled LOCAL SIMULATOR. **Re-run when Quokka is online** (any option above) and the results are replaced with device results labelled `QUOKKA DEVICE`.
+* **Why it fails although the Quokka notebooks are public:** the notebooks are only instructions. The simulator is a separate server reached through an ngrok tunnel, and `ERR_NGROK_3200` means that server is switched off on Quokka's side. The official docs use **no login or API key**, so signing in would not change this.
+* **Gate set:** the Quokka docs list `h, x, y, z, rx, ry, rz, cx, swap, cphase, U`. `quokka_helper.to_quokka_gates()` automatically rewrites anything else (e.g. `s`, `ccx`) before sending.
+* **Using a different Quokka** (e.g. one your lecturer gives you): edit `Assignment_2_Quantum/quokka_config.json` → `"quokka_name": "quokka7"`, or set the environment variable `QUOKKA_NAME`. No code changes are needed.
+* Check the connection at any time: `python run_project.py status`, or open http://quokka1.quokkacomputing.com/qsim/qasm in a browser (an `ERR_NGROK_3200` page means offline).
 
 ---
 
@@ -126,10 +130,12 @@ quantumcomputing_YB_Anish/
     ├── Task_3_Quantum_TicTacToe/
     │   ├── Task3_Quantum_TicTacToe_Completed.ipynb   completed + commented game
     │   ├── Original_Quantum_Tic_Tac_Toe__AS2.ipynb   supplied version (unchanged)
+    │   ├── Task3_Report_Quantum_TicTacToe.docx/.pdf  Task 3 Word document (required)
     │   └── results/                           4 game circuits, summaries, tile chances
     ├── Task_4_Quantum_ML/
     │   ├── Task4_Quantum_ML_Modified.ipynb    modified notebook (required .ipynb)
     │   ├── Original_Quantum_ML_AS2.ipynb      supplied version (unchanged)
+    │   ├── Task4_Report_Quantum_ML.docx/.pdf  Task 4 Word document (required)
     │   └── results/                           iteration logs, 2 graphs, comparison
     ├── Alternative_Code/                      a second solution for every task
     │   ├── Task_1_Alt_Qiskit/                 Bell state in Qiskit
@@ -141,6 +147,7 @@ quantumcomputing_YB_Anish/
     ├── Colab_Run_All_Tasks.ipynb              whole project in Google Colab
     ├── run_project.py                         runner (menu / all / one task / alt)
     ├── run_project.bat · run_all.bat · run_project.sh
+    ├── quokka_config.json                     which Quokka to use (default quokka1)
     ├── requirements.txt                       exact package versions
     ├── MAINTENANCE.md                         troubleshooting and safe changes
     └── Report/Assignment2.docx · Assignment2.pdf

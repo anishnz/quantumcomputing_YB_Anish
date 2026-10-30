@@ -35,8 +35,26 @@ import requests                     # HTTP POST to the Quokka device
 import urllib3                      # silence the warning caused by verify=False (as in the Quokka docs)
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-# The Quokka address given in the course notebook (Week 4 / Week 7 quokka_access.ipynb)
-QUOKKA_URL = "http://quokka1.quokkacomputing.com/qsim/qasm"
+# ----- Which Quokka to use ---------------------------------------------------------------
+# Default: 'quokka1', the address in the course notebook and in the official "Quokka Start
+# Here" notebook ("default Quokka address (change if you have your own!)").
+# To use a different Quokka WITHOUT editing code, either
+#   * set an environment variable:  QUOKKA_NAME=quokka7   (or the full QUOKKA_URL=...), or
+#   * create quokka_config.json next to run_project.py:  {"quokka_name": "quokka7"}
+import os as _os
+
+
+def _quokka_url() -> str:
+    if _os.environ.get("QUOKKA_URL"):                                  # full address wins
+        return _os.environ["QUOKKA_URL"]
+    name = _os.environ.get("QUOKKA_NAME")
+    cfg = Path(__file__).resolve().parent.parent / "quokka_config.json"
+    if not name and cfg.exists():
+        name = json.loads(cfg.read_text()).get("quokka_name")
+    return "http://{}.quokkacomputing.com/qsim/qasm".format(name or "quokka1")
+
+
+QUOKKA_URL = _quokka_url()
 
 DEFAULT_SHOTS = 1000                # the group agreed on 1000 shots for every circuit
 REQUEST_TIMEOUT = 120               # seconds to wait for Quokka before giving up

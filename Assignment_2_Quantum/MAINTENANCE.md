@@ -24,6 +24,7 @@ Assignment_2_Quantum/
 ├── run_project.sh                   macOS / Linux launcher
 ├── outputs_html/                    created by the runner: one web page per task
 ├── requirements.txt                 exact package versions
+├── quokka_config.json               which Quokka to use (default quokka1)
 └── MAINTENANCE.md                   this file
 ```
 
@@ -89,7 +90,7 @@ On 31 October 2026 the Quokka endpoint replied *"endpoint is offline (ERR_NGROK_
 | I want to... | Change this |
 |---|---|
 | use a different number of shots | `SHOTS = 1000` at the top of each notebook |
-| change the Quokka address | `QUOKKA_URL` in `common/quokka_helper.py` (one place for all tasks) |
+| change the Quokka address | `"quokka_name"` in `quokka_config.json`, or the `QUOKKA_NAME` / `QUOKKA_URL` environment variable (no code change) |
 | change the size of an X/O move in the game | `ROTATION = math.pi / 4` in the Task 3 notebook |
 | run more or fewer ML iterations | `MAXITER = 100` in the Task 4 notebook |
 | get different random results in Task 4 | `SEED = 2026` in the Task 4 notebook |
@@ -110,3 +111,4 @@ On 31 October 2026 the Quokka endpoint replied *"endpoint is offline (ERR_NGROK_
 |---|---|
 | 31 Oct 2026 | Project structure, shared helper, notebooks for Tasks 1–4, custom QASM, maintenance guide |
 | 31 Oct 2026 | Runner (run_project.py/.bat/.sh), alternative code, Colab notebook, GitHub README |
+| 31 Oct 2026 | Quokka gate-set translation, configurable Quokka address, Task 3/4 Word documents, verified references |

@@ -1,0 +1,4 @@
+{
+  "quokka_name": "quokka1",
+  "_help": "Change quokka_name if your lecturer gives you a different Quokka (e.g. quokka7). The address becomes http://<quokka_name>.quokkacomputing.com/qsim/qasm"
+}
