@@ -3,9 +3,9 @@
   "shots": 1000,
   "maxiter": 100,
   "seed": 2026,
-  "quantum_total_s": 84.63589424200006,
-  "localA_total_s": 0.16266157000006842,
-  "localB_total_s": 0.007103905999997551,
-  "localC_total_s": 0.03360495099991567,
+  "quantum_total_s": 91.682284762,
+  "localA_total_s": 0.19386131499999237,
+  "localB_total_s": 0.02404642999999851,
+  "localC_total_s": 0.03444530799998802,
   "circuit_runs": 900
 }

@@ -32,6 +32,8 @@ from datetime import datetime       # time stamp for the evidence files
 from pathlib import Path            # safe file paths on Windows and Linux
 
 import requests                     # HTTP POST to the Quokka device
+import urllib3                      # silence the warning caused by verify=False (as in the Quokka docs)
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # The Quokka address given in the course notebook (Week 4 / Week 7 quokka_access.ipynb)
 QUOKKA_URL = "http://quokka1.quokkacomputing.com/qsim/qasm"
@@ -76,6 +78,54 @@ def clean_qasm(qasm_text: str) -> str:
     return "\n".join(kept) + "\n"
 
 
+# ---------------------------------------- 1b. only use gates Quokka supports
+# From the official "Quokka docs" notebook (QASM Support table): the Quokka simulator
+# understands h, x, y, z, rx, ry, rz, cx, swap, cphase, U (and lerr for error simulation).
+# It does NOT list s, t, tdg, ccx (Toffoli), sdg, cz, ... so those must be rewritten.
+QUOKKA_GATES = {"h", "x", "y", "z", "rx", "ry", "rz", "cx", "swap"}
+_NOT_GATES = {"measure", "barrier"}                  # instructions that are not gates
+
+
+def to_quokka_gates(qasm_text: str) -> str:
+    """Rewrite a circuit so it only uses gates from Quokka's QASM table.
+
+    If the script already uses only supported gates it is returned unchanged
+    (so register names such as Cirq's 'm_c' are kept). Otherwise Qiskit's
+    transpiler rewrites it, e.g. S -> RZ(pi/2), T -> RZ(pi/4) and the Toffoli
+    -> 6 CNOTs + H + RZ gates. RZ differs from S/T only by a global phase,
+    which can never change a measurement result.
+    """
+    import qiskit.qasm2
+    from qiskit import transpile
+
+    body = clean_qasm(qasm_text).replace("OPENQASM 2.0;\n", "")
+    circuit = qiskit.qasm2.loads('OPENQASM 2.0;\ninclude "qelib1.inc";\n' + body)
+    used = set(circuit.count_ops()) - _NOT_GATES
+    if used <= QUOKKA_GATES:                         # nothing to rewrite
+        return _numeric_angles(clean_qasm(qasm_text))
+    rewritten = transpile(circuit, basis_gates=sorted(QUOKKA_GATES), optimization_level=0)
+    return _numeric_angles(clean_qasm(qiskit.qasm2.dumps(rewritten)))
+
+
+def _numeric_angles(qasm_text: str) -> str:
+    """Write angles such as rz(pi/2) as plain numbers, e.g. rz(1.5707963267948966).
+
+    The Quokka documentation only shows numeric angles, so this avoids relying
+    on the simulator understanding the symbol 'pi'.
+    """
+    import math
+    import re
+
+    def number(match):
+        expr = match.group(1)
+        if "pi" not in expr:
+            return match.group(0)
+        value = eval(expr, {"__builtins__": {}}, {"pi": math.pi})   # only 'pi' and arithmetic allowed
+        return f"({value!r})"
+
+    return re.sub(r"\(([0-9pi\.\*/\+\- eE]+)\)", number, qasm_text)
+
+
 # ------------------------------------------------- 2. send to Quokka device
 def run_on_quokka(qasm_text: str, shots: int = DEFAULT_SHOTS) -> dict:
     """Send one script to Quokka. Returns the decoded JSON reply.
@@ -87,8 +137,9 @@ def run_on_quokka(qasm_text: str, shots: int = DEFAULT_SHOTS) -> dict:
          "result": {"<creg name>": [[bit0, bit1, ...], ...one list per shot]}}
     Raises RuntimeError if the device is offline or replies with an error.
     """
-    payload = {"script": clean_qasm(qasm_text), "count": int(shots)}
-    reply = requests.post(QUOKKA_URL, json=payload, timeout=REQUEST_TIMEOUT)
+    payload = {"script": to_quokka_gates(qasm_text), "count": int(shots)}
+    # verify=False exactly as in the official Quokka notebooks
+    reply = requests.post(QUOKKA_URL, json=payload, timeout=REQUEST_TIMEOUT, verify=False)
     if reply.status_code != 200:                  # e.g. 404 when the endpoint is offline
         if "ERR_NGROK_3200" in reply.text:        # Quokka's tunnel reports this when the device is off
             raise RuntimeError("Quokka endpoint is offline (HTTP 404, ERR_NGROK_3200)")
@@ -110,7 +161,8 @@ def run_locally(qasm_text: str, shots: int = DEFAULT_SHOTS) -> list:
     from qiskit import transpile                     # map gates to the simulator
     from qiskit_aer import AerSimulator              # fast local simulator
 
-    full = 'OPENQASM 2.0;\ninclude "qelib1.inc";\n' + clean_qasm(qasm_text).replace("OPENQASM 2.0;\n", "")
+    script = to_quokka_gates(qasm_text)              # run exactly what Quokka would receive
+    full = 'OPENQASM 2.0;\ninclude "qelib1.inc";\n' + script.replace("OPENQASM 2.0;\n", "")
     circuit = qiskit.qasm2.loads(full)               # build a QuantumCircuit from text
     seed = int(_SEEDS.integers(0, 2**31 - 1))        # next seed from a fixed sequence -> repeatable results
     sim = AerSimulator(seed_simulator=seed)
@@ -172,7 +224,7 @@ def run_qasm(qasm_text: str, shots: int = DEFAULT_SHOTS, label: str = "run",
         "probs": counts_to_probs(counts),
         "seconds": round(seconds, 4),
         "timestamp": datetime.now().isoformat(timespec="seconds"),
-        "qasm": clean_qasm(qasm_text),
+        "qasm": to_quokka_gates(qasm_text),          # the exact script sent (Quokka gate set)
         "quokka_error": error,
     }
     if save_dir is not None:                       # keep evidence for the report

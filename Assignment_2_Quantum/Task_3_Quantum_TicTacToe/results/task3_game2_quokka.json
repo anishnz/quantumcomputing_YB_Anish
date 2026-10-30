@@ -409,8 +409,8 @@
     "111110100": 0.001,
     "111111111": 0.001
   },
-  "seconds": 0.5185,
-  "timestamp": "2026-10-31T00:55:56",
-  "qasm": "OPENQASM 2.0;\nqreg q[9];\ncreg c[9];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\nh q[4];\nh q[5];\nh q[6];\nh q[7];\nh q[8];\nry(-pi/4) q[0];\nry(pi/4) q[2];\nry(-pi/4) q[4];\nry(pi/4) q[6];\nry(-pi/4) q[8];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\nmeasure q[8] -> c[8];\n",
+  "seconds": 0.4131,
+  "timestamp": "2026-10-31T01:38:42",
+  "qasm": "OPENQASM 2.0;\nqreg q[9];\ncreg c[9];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\nh q[4];\nh q[5];\nh q[6];\nh q[7];\nh q[8];\nry(-0.7853981633974483) q[0];\nry(0.7853981633974483) q[2];\nry(-0.7853981633974483) q[4];\nry(0.7853981633974483) q[6];\nry(-0.7853981633974483) q[8];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\nmeasure q[8] -> c[8];\n",
   "quokka_error": "Quokka endpoint is offline (HTTP 404, ERR_NGROK_3200)"
 }

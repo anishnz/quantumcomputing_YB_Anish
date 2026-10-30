@@ -49,6 +49,7 @@ jupyter notebook
 * Request: `POST` JSON `{"script": <OpenQASM 2.0>, "count": <shots>}`.
 * Reply: `{"error": "no error", "error_code": 0, "result": {"<register>": [[c0, c1, ...], ...]}}`, one list per shot.
 * `clean_qasm()` removes `include "qelib1.inc";`, comments and `barrier` lines, because Quokka does not have the library.
+* `to_quokka_gates()` rewrites any gate Quokka does not support (s, t, ccx, ...) into its documented QASM gate set h, x, y, z, rx, ry, rz, cx, swap, and writes angles as numbers. Source: the official *Quokka docs* Colab notebook.
 * **Shots:** every task uses **1000** (`SHOTS = 1000` at the top of each notebook).
 
 **Test the connection on its own:**
@@ -74,7 +75,7 @@ On 31 October 2026 the Quokka endpoint replied *"endpoint is offline (ERR_NGROK_
 | `ModuleNotFoundError: cirq` (or qiskit) | wrong kernel in VS Code | Select the `.venv` kernel (top-right of the notebook) |
 | `ModuleNotFoundError: quokka_helper` | notebook opened from another folder | Open the notebook from inside its task folder; the code adds `../common` to the path |
 | `Quokka endpoint is offline (ERR_NGROK_3200)` | the Quokka server is switched off | Wait and re-run; results meanwhile are labelled LOCAL SIMULATOR |
-| `Quokka error: ...` | the device rejected a gate | Task 2B automatically resends `results/custom_half_adder_basic_gates.qasm` (only basic gates) |
+| `Quokka error: ...` (error 7 = INVALID_QASM) | a gate Quokka does not support | `to_quokka_gates()` already rewrites gates into Quokka's set (h, x, y, z, rx, ry, rz, cx, swap); check the printed script in the JSON file |
 | `requests.exceptions.ConnectTimeout` | no internet or firewall | Check the internet connection or campus proxy; `REQUEST_TIMEOUT` is in `quokka_helper.py` |
 | Circuit drawings missing / `pylatexenc` error | drawer dependency missing | `pip install pylatexenc` |
 | Task 3 buttons do not appear | ipywidgets not enabled | `pip install ipywidgets` and restart VS Code; the recorded games (Section 6) work without buttons |

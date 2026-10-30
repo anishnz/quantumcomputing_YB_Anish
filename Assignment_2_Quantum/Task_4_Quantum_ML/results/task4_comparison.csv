@@ -1,5 +1,5 @@
 Version,Total time (s),Mean time / iteration (s),Circuit runs,Final loss (monitored),Best loss,Train accuracy,Test accuracy,All 4 images
-"Quantum circuit (local sim, 1000 shots)",84.636,0.56269,900,0.0,0.0,1.0,1.0,1.0
-"Local-A: same circuit, exact NumPy",0.163,0.00108,0,0.0003,0.0003,1.0,1.0,1.0
-Local-B: classical logistic regression,0.007,5e-05,0,0.2961,0.2961,1.0,0.0,0.75
-Local-C: classical + pairwise features,0.034,0.00023,0,0.2057,0.2057,1.0,0.0,0.75
+"Quantum circuit (local sim, 1000 shots)",91.682,0.61367,900,0.0,0.0,1.0,1.0,1.0
+"Local-A: same circuit, exact NumPy",0.194,0.00131,0,0.0003,0.0003,1.0,1.0,1.0
+Local-B: classical logistic regression,0.024,0.00016,0,0.2961,0.2961,1.0,0.0,0.75
+Local-C: classical + pairwise features,0.034,0.00024,0,0.2057,0.2057,1.0,0.0,0.75

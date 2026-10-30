@@ -11,8 +11,8 @@
     "0": 0.491,
     "1": 0.509
   },
-  "seconds": 0.3469,
-  "timestamp": "2026-10-31T00:55:50",
+  "seconds": 0.5071,
+  "timestamp": "2026-10-31T01:38:36",
   "qasm": "OPENQASM 2.0;\nqreg q[2];\ncreg c[1];\nh q[0];\nx q[1];\ncx q[0],q[1];\nmeasure q[1] -> c[0];\n",
   "quokka_error": "Quokka endpoint is offline (HTTP 404, ERR_NGROK_3200)"
 }
