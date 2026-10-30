@@ -1,0 +1,6 @@
+Interactive games played in Jupyter Notebook 7 by clicking the widget buttons (31 Oct 2026).
+Each Measure click runs the game circuit once (1 shot) on AerSimulator, as in the original game.
+
+playA  clicks: X 4, X 4, O 0, O 8, Not 2      final board: X O O / O X X / O X O   X lines 0, O lines 0 (draw)
+playB  clicks: X 0, X 4, X 8, O 2, O 6        final board: X O O / X X O / O O X   X lines 1 (diagonal 0-4-8), O lines 0
+playC  clicks: O 4, O 4, X 1, Not 4, SWAP 0 8 final board: X X X / X X O / O O X   X lines 2, O lines 0
