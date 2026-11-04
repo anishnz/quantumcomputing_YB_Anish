@@ -1,6 +1,6 @@
 # MAINTENANCE GUIDE — MSE802 Assessment 2 (Quantum Project)
 
-Group: **Anish Shrestha** (270889991) and **Sandhya Tiwari** (270888992)
+Group: **Anish Shrestha** (270889991) and **Sandhya Tiwari** (270918511)
 Last updated: 4 November 2026
 
 This guide explains how to set up, run, test, update and fix the project.
@@ -17,11 +17,13 @@ Assignment_2_Quantum/
 ├── Task_3_Quantum_TicTacToe/        completed game + original
 ├── Task_4_Quantum_ML/               modified ML notebook + original
 ├── Alternative_Code/                second solution for each task (+ outputs/)
-├── Report/                          Assignment2.docx / Assignment2.pdf
+├── Report/                          Assignment2.docx / .pdf, Reflections/ (two individual reports)
 ├── Colab_Run_All_Tasks.ipynb        run everything in Google Colab
 ├── run_project.py                   runner: menu / all / one task / alt / status
 ├── run_project.bat, run_all.bat     Windows launchers (set up .venv first time)
-├── run_project.sh                   macOS / Linux launcher
+├── run_project.command, run_all.command   macOS double-click launchers
+├── run_project.sh                   macOS / Linux terminal launcher
+├── Device_Comparison/               laptop vs Quokka scripts, results, dated screenshots
 ├── outputs_html/                    created by the runner: one web page per task
 ├── requirements.txt                 exact package versions
 ├── quokka_config.json               which Quokka to use (default quokka1)
@@ -43,6 +45,12 @@ python -m venv .venv
 pip install -r requirements.txt
 jupyter notebook
 ```
+
+## 2b. First-time set-up (macOS)
+
+1. Install **Python 3.12 or newer** from python.org (or `brew install python`).
+2. Double-click **`run_project.command`** (menu) or **`run_all.command`**. The first run creates `.venv` and installs the packages.
+3. If macOS blocks the file: right-click → **Open** → **Open**. If it is not executable after unzipping: `chmod +x run_project.command run_all.command`.
 
 ## 3. How the Quokka connection works
 
@@ -76,8 +84,9 @@ On 31 October 2026 the Quokka endpoint replied *"endpoint is offline (ERR_NGROK_
 |---|---|---|---|
 | 30–31 Oct 2026 | none checked except quokka1 | quokka1 (ERR_NGROK_3200) | report Section 2.5 |
 | 4 Nov 2026, 18:01 | quokka2, quokka3, quokka4, quokka5 | quokka1, quokka6–11 | `Device_Comparison/screenshots/`, `results/quokka_status_2026-11-04.json` |
+| 4 Nov 2026, 18:14–18:31 | Tasks 1–4 re-run, all answered by quokka2 (Task 4: 900 circuits, 606 s) | – | each task's `results/*.json` (`source`, `device`, `server_time_ms`) |
 
-**Laptop vs Quokka comparison:** `python Device_Comparison/compare_laptop_vs_quokka.py` runs the Task 1 and Task 2B circuits (1000 shots × 5 repeats) on the laptop and on every Quokka, and saves JSON, CSV and two charts in `Device_Comparison/results/`.
+**Laptop vs Quokka comparison:** `python run_project.py compare` (menu option C) runs `compare_laptop_vs_quokka.py` and `scaling_laptop_vs_quokka.py`. The first the Task 1 and Task 2B circuits (1000 shots × 5 repeats) on the laptop and on every Quokka, and saves JSON, CSV and two charts in `Device_Comparison/results/`; the second runs a 2- to 24-qubit circuit on the laptop and on Quokka (`chart_scaling.png`).
 
 ## 5. Common problems and fixes
 
@@ -111,7 +120,7 @@ On 31 October 2026 the Quokka endpoint replied *"endpoint is offline (ERR_NGROK_
 
 - [ ] `python common\quokka_helper.py` prints a status
 - [ ] Task 1: only `00` and `11` appear, each about 500 of 1000
-- [ ] Task 2A: only `01` and `10` appear; Task 2B: only `0000`, `1001`, `1010`, `0111`, about 250 each
+- [ ] Task 2A: run 1 only `01`/`10`; run 2 always `11`; run 3 always `10`. Task 2B: only `0000`, `1001`, `1010`, `0111`, about 250 each
 - [ ] Task 3: Game 3 tile 4 has P(X) = 0.00; Game 4 tile 8 has P(X) = 1.00
 - [ ] Task 4: "Our simulator" and "Qiskit" values printed in Section 8 are equal
 - [ ] Every result shows its source (QUOKKA DEVICE or LOCAL SIMULATOR)
@@ -123,4 +132,5 @@ On 31 October 2026 the Quokka endpoint replied *"endpoint is offline (ERR_NGROK_
 | 31 Oct 2026 | Project structure, shared helper, notebooks for Tasks 1–4, custom QASM, maintenance guide |
 | 31 Oct 2026 | Runner (run_project.py/.bat/.sh), alternative code, Colab notebook, GitHub README |
 | 31 Oct 2026 | Quokka gate-set translation, configurable Quokka address, Task 3/4 Word documents, verified references |
+| 4 Nov 2026 | Task 2 block C rebuilt (CNOT, Z, CNOT, H) after the lecturer's brief; all tasks re-run on quokka2; Task 4 online-check fix; qubit-scaling test; macOS `.command` launchers; Sandhya's ID corrected to 270918511 |
 | 4 Nov 2026 | Multi-device list with failover, `device` + `server_time_ms` in results, `quokka_status()` checks every device, `compare_devices()` + Device_Comparison folder (laptop vs Quokka) |

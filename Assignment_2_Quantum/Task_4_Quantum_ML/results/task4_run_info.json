@@ -1,11 +1,11 @@
 {
-  "source": "LOCAL SIMULATOR (Qiskit Aer) - Quokka was not reachable",
+  "source": "QUOKKA DEVICE",
   "shots": 1000,
   "maxiter": 100,
   "seed": 2026,
-  "quantum_total_s": 91.682284762,
-  "localA_total_s": 0.19386131499999237,
-  "localB_total_s": 0.02404642999999851,
-  "localC_total_s": 0.03444530799998802,
+  "quantum_total_s": 606.193464917,
+  "localA_total_s": 0.17712214499988477,
+  "localB_total_s": 0.007244517999879463,
+  "localC_total_s": 0.026088434000030247,
   "circuit_runs": 900
 }

@@ -1,0 +1,18 @@
+{
+  "label": "task2a_run3",
+  "source": "QUOKKA DEVICE",
+  "device": "quokka2",
+  "shots_requested": 1000,
+  "shots_received": 1000,
+  "counts": {
+    "10": 1000
+  },
+  "probs": {
+    "10": 1.0
+  },
+  "seconds": 1.0596,
+  "server_time_ms": 3.818397002760321,
+  "timestamp": "2026-11-04T18:15:42",
+  "qasm": "OPENQASM 2.0;\nqreg q[2];\ncreg c[2];\nh q[0];\nx q[1];\ncx q[0],q[1];\ncx q[0],q[1];\nh q[0];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+  "quokka_error": null
+}

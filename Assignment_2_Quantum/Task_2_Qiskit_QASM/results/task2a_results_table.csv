@@ -1,5 +1,13 @@
-Outcome |q1 q0>,Theory P,Counts (of 1000),Measured P,Difference
-00,0.0,0,0.0,0.0
-01,0.5,492,0.492,-0.008
-10,0.5,508,0.508,0.008
-11,0.0,0,0.0,0.0
+Run,Outcome c1c0,Theory P,Counts (of 1000),Measured P
+"A-1 checkpoint (H,X,CNOT,Z)",00,0.0,0,0.0
+"A-1 checkpoint (H,X,CNOT,Z)",01,0.5,532,0.532
+"A-1 checkpoint (H,X,CNOT,Z)",10,0.5,468,0.468
+"A-1 checkpoint (H,X,CNOT,Z)",11,0.0,0,0.0
+"A-2 full circuit (H,X,CNOT,Z,CNOT,H)",00,0.0,0,0.0
+"A-2 full circuit (H,X,CNOT,Z,CNOT,H)",01,0.0,0,0.0
+"A-2 full circuit (H,X,CNOT,Z,CNOT,H)",10,0.0,0,0.0
+"A-2 full circuit (H,X,CNOT,Z,CNOT,H)",11,1.0,1000,1.0
+"A-3 control, no Z (H,X,CNOT,CNOT,H)",00,0.0,0,0.0
+"A-3 control, no Z (H,X,CNOT,CNOT,H)",01,0.0,0,0.0
+"A-3 control, no Z (H,X,CNOT,CNOT,H)",10,1.0,1000,1.0
+"A-3 control, no Z (H,X,CNOT,CNOT,H)",11,0.0,0,0.0

@@ -1,0 +1,17 @@
+qubits,target,mean_seconds,mean_server_ms,statevector_MB
+2,this computer,0.066,,0.0
+2,quokka2,0.8028,3.19,0.0
+4,this computer,0.0683,,0.0
+4,quokka2,0.9387,3.61,0.0
+8,this computer,0.0785,,0.004
+8,quokka2,1.2382,3.57,0.004
+12,this computer,0.0738,,0.066
+12,quokka2,1.1919,10.82,0.066
+16,this computer,0.076,,1.049
+16,quokka2,1.1399,22.32,1.049
+20,this computer,0.1758,,16.777
+20,quokka2,2.0004,18.86,16.777
+22,this computer,0.3877,,67.109
+22,quokka2,1.5155,10.63,67.109
+24,this computer,1.4981,,268.435
+24,quokka2,1.6772,10.76,268.435

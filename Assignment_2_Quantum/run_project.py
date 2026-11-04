@@ -6,7 +6,8 @@ How to use (from the Assignment_2_Quantum folder):
     python run_project.py all        -> run Tasks 1, 2, 3 and 4 together
     python run_project.py 1          -> run only Task 1   (also 2, 3, 4)
     python run_project.py alt        -> run the alternative code for all tasks
-    python run_project.py status     -> only test the Quokka connection
+    python run_project.py status     -> only test the Quokka connection (every device)
+    python run_project.py compare    -> laptop vs Quokka speed and accuracy comparison
 
 What it does for each task:
     1. executes the task notebook (the outputs are saved inside the .ipynb)
@@ -107,12 +108,16 @@ def summarise(task_id):
     print("  RESULTS:")
     if task_id == "1":
         r = _load("Task_1_Bell_State", "task1_bell_quokka.json")
-        print(f"    source: {r['source']}\n    counts (1000 shots): {r['counts']}   expected: only 00 and 11, ~500 each")
+        print(f"    source: {r['source']} ({r.get('device', '')})\n    counts (1000 shots): {r['counts']}   expected: only 00 and 11, ~500 each")
     elif task_id == "2":
-        a = _load("Task_2_Qiskit_QASM", "task2a_both_qubits.json")
+        a1 = _load("Task_2_Qiskit_QASM", "task2a_run1.json")
+        a = _load("Task_2_Qiskit_QASM", "task2a_run2.json")
+        a3 = _load("Task_2_Qiskit_QASM", "task2a_run3.json")
         b = _load("Task_2_Qiskit_QASM", "task2b_half_adder.json")
-        print(f"    source: {a['source']}")
-        print(f"    2A H-X-CNOT counts: {a['counts']}   expected: only 01 and 10")
+        print(f"    source: {a['source']} ({a.get('device', '')})")
+        print(f"    2A checkpoint H,X,CNOT,Z      : {a1['counts']}   expected: only 01 and 10")
+        print(f"    2A full H,X,CNOT,Z,CNOT,H     : {a['counts']}   expected: only 11")
+        print(f"    2A control without Z          : {a3['counts']}   expected: only 10")
         print(f"    2B half adder counts: {b['counts']}   expected: 0000, 1001, 1010, 0111 (~250 each)")
     elif task_id == "3":
         import csv
@@ -143,7 +148,7 @@ def menu():
         line()
         for k, (title, *_rest) in TASKS.items():
             print(f"  {k}  {title}")
-        print("  A  Run Tasks 1-4 together\n  L  Run the alternative code\n  S  Test the Quokka connection\n  Q  Quit")
+        print("  A  Run Tasks 1-4 together\n  L  Run the alternative code\n  S  Test the Quokka connection\n  C  Compare this laptop with Quokka\n  Q  Quit")
         choice = input("Choose: ").strip().upper()
         if choice == "Q":
             return
@@ -163,6 +168,10 @@ def handle(choice):
         run_alternatives()
     elif choice in ("S", "STATUS"):
         quokka_status()
+    elif choice in ("C", "COMPARE"):
+        ensure_environment()
+        subprocess.run([sys.executable, "Device_Comparison/compare_laptop_vs_quokka.py"], cwd=ROOT, check=False)
+        subprocess.run([sys.executable, "Device_Comparison/scaling_laptop_vs_quokka.py"], cwd=ROOT, check=False)
     else:
         print("Unknown choice:", choice)
 

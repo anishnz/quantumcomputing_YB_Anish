@@ -1,19 +1,19 @@
 # MSE802 Quantum Computing — Assignment 2: Quantum Project
 
 **Yoobee College of Creative Innovation · Master of Software Engineering (Level 8)**
-**Group:** Anish Shrestha (270889991) and Sandhya Tiwari (270888992) · **Lecturer:** Dr Helena Bahrami
+**Group:** Anish Shrestha (270889991) and Sandhya Tiwari (270918511) · **Lecturer:** Dr Helena Bahrami
 
 This repository holds the code, results and report for Assessment 2. Each task has its own folder, notebook and `results/` folder:
 
 | Task | What it does | Notebook | Open in Colab |
 |---|---|---|---|
 | **Task 1** | Bell state (\|00⟩+\|11⟩)/√2 with **Cirq**, run on **Quokka** (1000 shots) | [`Task1_Bell_State_Cirq_Quokka.ipynb`](Assignment_2_Quantum/Task_1_Bell_State/Task1_Bell_State_Cirq_Quokka.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/anishnz/quantumcomputing_YB_Anish/blob/main/Assignment_2_Quantum/Task_1_Bell_State/Task1_Bell_State_Cirq_Quokka.ipynb) |
-| **Task 2** | Given H–X–C circuit in **Qiskit** + our own **QASM** circuit (quantum half adder) | [`Task2_Qiskit_Circuits_and_QASM.ipynb`](Assignment_2_Quantum/Task_2_Qiskit_QASM/Task2_Qiskit_Circuits_and_QASM.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/anishnz/quantumcomputing_YB_Anish/blob/main/Assignment_2_Quantum/Task_2_Qiskit_QASM/Task2_Qiskit_Circuits_and_QASM.ipynb) |
+| **Task 2** | Given H–X start + our block C (CNOT, Z, CNOT, H) in **Qiskit** + our own 4-qubit **QASM** circuit (quantum half adder) | [`Task2_Qiskit_Circuits_and_QASM.ipynb`](Assignment_2_Quantum/Task_2_Qiskit_QASM/Task2_Qiskit_Circuits_and_QASM.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/anishnz/quantumcomputing_YB_Anish/blob/main/Assignment_2_Quantum/Task_2_Qiskit_QASM/Task2_Qiskit_Circuits_and_QASM.ipynb) |
 | **Task 3** | Completed **quantum tic-tac-toe** game + 4 recorded games | [`Task3_Quantum_TicTacToe_Completed.ipynb`](Assignment_2_Quantum/Task_3_Quantum_TicTacToe/Task3_Quantum_TicTacToe_Completed.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/anishnz/quantumcomputing_YB_Anish/blob/main/Assignment_2_Quantum/Task_3_Quantum_TicTacToe/Task3_Quantum_TicTacToe_Completed.ipynb) |
 | **Task 4** | **Quantum ML** classifier: iteration logging, 2 graphs, quantum vs local comparison | [`Task4_Quantum_ML_Modified.ipynb`](Assignment_2_Quantum/Task_4_Quantum_ML/Task4_Quantum_ML_Modified.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/anishnz/quantumcomputing_YB_Anish/blob/main/Assignment_2_Quantum/Task_4_Quantum_ML/Task4_Quantum_ML_Modified.ipynb) |
 | **All tasks** | Runs Tasks 1–4 together, shows results, runs the alternative code | [`Colab_Run_All_Tasks.ipynb`](Assignment_2_Quantum/Colab_Run_All_Tasks.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/anishnz/quantumcomputing_YB_Anish/blob/main/Assignment_2_Quantum/Colab_Run_All_Tasks.ipynb) |
 
-📄 **Report:** [`Assignment_2_Quantum/Report/Assignment2.pdf`](Assignment_2_Quantum/Report/Assignment2.pdf) (Word version: `Assignment2.docx`) · Task Word documents: [Task 3](Assignment_2_Quantum/Task_3_Quantum_TicTacToe/Task3_Report_Quantum_TicTacToe.pdf), [Task 4](Assignment_2_Quantum/Task_4_Quantum_ML/Task4_Report_Quantum_ML.pdf) · 📦 Submission ZIP: [`MSE802_Assignment2_Shrestha_Tiwari.zip`](MSE802_Assignment2_Shrestha_Tiwari.zip)
+📄 **Report:** [`Assignment_2_Quantum/Report/Assignment2.pdf`](Assignment_2_Quantum/Report/Assignment2.pdf) (Word version: `Assignment2.docx`) · Reflections: [Anish](Assignment_2_Quantum/Report/Reflections/Reflection_Anish_Shrestha_270889991.pdf), [Sandhya](Assignment_2_Quantum/Report/Reflections/Reflection_Sandhya_Tiwari_270918511.pdf) · Task Word documents: [Task 3](Assignment_2_Quantum/Task_3_Quantum_TicTacToe/Task3_Report_Quantum_TicTacToe.pdf), [Task 4](Assignment_2_Quantum/Task_4_Quantum_ML/Task4_Report_Quantum_ML.pdf) · 📦 Submission ZIP: [`MSE802_Assignment2_Shrestha_Tiwari.zip`](MSE802_Assignment2_Shrestha_Tiwari.zip) (Windows + macOS launchers, all reports, evidence screenshots)
 
 ---
 
@@ -47,9 +47,16 @@ To run **one task**, click that task's badge, then **Runtime → Run all**. Its 
    A  Run Tasks 1-4 together
    L  Run the alternative code
    S  Test the Quokka connection
+   C  Compare this laptop with Quokka
    Q  Quit
    ```
    **`run_all.bat`** runs Tasks 1–4 together without the menu.
+
+### Option B2 — macOS, one click
+1. Install **Python 3.12 or newer** from [python.org](https://www.python.org/downloads/macos/) (or `brew install python`).
+2. Download and unzip the repository as above.
+3. In Finder, open `Assignment_2_Quantum` and **double-click `run_project.command`** (menu) or **`run_all.command`** (Tasks 1–4 together). Terminal opens; the first run installs the packages.
+4. If macOS blocks it ("unidentified developer"): right-click → **Open** → **Open** once. If it is not executable: `chmod +x run_project.command run_all.command`.
 
 ### Option C — Any computer, from a terminal (Windows / macOS / Linux)
 ```bash
@@ -62,7 +69,8 @@ python run_project.py             # menu
 python run_project.py all         # Tasks 1, 2, 3 and 4 together
 python run_project.py 1           # only Task 1   (also 2, 3, 4)
 python run_project.py alt         # the alternative code for all tasks
-python run_project.py status      # test the Quokka connection only
+python run_project.py status      # test every Quokka device
+python run_project.py compare     # laptop vs Quokka: speed and outcome (+ qubit scaling)
 ```
 On macOS/Linux you can also use `./run_project.sh all`.
 
@@ -85,17 +93,18 @@ On macOS/Linux you can also use `./run_project.sh all`.
 
 Example terminal output of `python run_project.py all`:
 ```
-Quokka device: online                (or: offline -> results labelled LOCAL SIMULATOR)
+Quokka devices: online: quokka2, quokka3, quokka4, quokka5 | offline: quokka1
 RUNNING Task 1 - Bell state (Cirq)
-  counts (1000 shots): {'00': 508, '11': 492}   expected: only 00 and 11
+  source: QUOKKA DEVICE (quokka2)
+  counts (1000 shots): {'00': 501, '11': 499}   expected: only 00 and 11
 RUNNING Task 2 - Qiskit circuit + custom QASM
-  2A H-X-CNOT counts: {'01': 492, '10': 508}   expected: only 01 and 10
-  2B half adder counts: {'0000': 250, '0111': 244, '1001': 247, '1010': 259}
+  2A full H,X,CNOT,Z,CNOT,H : {'11': 1000}   expected: only 11
+  2B half adder counts: {'0000': 261, '0111': 242, '1001': 250, '1010': 247}
 RUNNING Task 3 - Quantum tic-tac-toe
   game2_diagonals  X wins  705/1000   O wins  210/1000
 RUNNING Task 4 - Quantum machine learning
-  Quantum circuit (1000 shots)   0.56 s/iter   final loss 0.0   all 4 images 1.0
-  Local-A: same circuit, exact   0.0011 s/iter final loss 0.0003 all 4 images 1.0
+  Quantum circuit (Quokka)      4.05 s/iter   final loss 0.0   all 4 images 1.0
+  Local-A: same circuit, exact  0.0012 s/iter final loss 0.0003 all 4 images 1.0
 ALL FOUR TASKS FINISHED. Open outputs_html/ to see every result.
 ```
 
@@ -103,14 +112,14 @@ ALL FOUR TASKS FINISHED. Open outputs_html/ to see every result.
 
 ## 3. The Quokka device (important)
 
-* Circuits are sent to Quokka as OpenQASM 2.0: `POST http://quokka1.quokkacomputing.com/qsim/qasm` with `{"script": ..., "count": 1000}` (same as the course notebook `quokka_access.ipynb`).
-* Every task uses **1000 shots** (`SHOTS = 1000` at the top of each notebook).
-* If Quokka is **offline**, the same QASM runs on the Qiskit Aer simulator, and every result is labelled **`LOCAL SIMULATOR`** in the output and JSON files, so it is never presented as Quokka data.
-* On 31 October 2026 the Quokka endpoint was offline (`ERR_NGROK_3200`), so the saved results in this repository are labelled LOCAL SIMULATOR. **Re-run when Quokka is online** (any option above) and the results are replaced with device results labelled `QUOKKA DEVICE`.
-* **Why it fails although the Quokka notebooks are public:** the notebooks are only instructions. The simulator is a separate server reached through an ngrok tunnel, and `ERR_NGROK_3200` means that server is switched off on Quokka's side. The official docs use **no login or API key**, so signing in would not change this.
+* Circuits are sent to Quokka as OpenQASM 2.0: `POST http://<device>.quokkacomputing.com/qsim/qasm` with `{"script": ..., "count": 1000}` (same as the course notebook `quokka_access.ipynb`). **No login or API key** is needed.
+* Quokka runs several cloud devices (**quokka1 – quokka11**; see the Fleet Status board on [quokkacomputing.com/get-started](https://www.quokkacomputing.com/get-started)). The helper tries the devices in `quokka_config.json` in order (**quokka2 → 3 → 4 → 5 → 1**) and uses the first one that answers.
+* **Status on 4 November 2026, 18:01 NZDT:** quokka2, quokka3, quokka4, quokka5 **online**; quokka1 and quokka6–11 offline. All saved results in this repository were produced on **quokka2** and are labelled `QUOKKA DEVICE` (each JSON also stores `device` and `server_time_ms`).
+* 30–31 October 2026: every device we tried was offline (`ERR_NGROK_3200`), so the first draft used the labelled local simulator.
+* If every device is offline, the same QASM runs on the Qiskit Aer simulator and is labelled **`LOCAL SIMULATOR`**, so it is never presented as Quokka data.
 * **Gate set:** the Quokka docs list `h, x, y, z, rx, ry, rz, cx, swap, cphase, U`. `quokka_helper.to_quokka_gates()` automatically rewrites anything else (e.g. `s`, `ccx`) before sending.
-* **Using a different Quokka** (e.g. one your lecturer gives you): edit `Assignment_2_Quantum/quokka_config.json` → `"quokka_name": "quokka7"`, or set the environment variable `QUOKKA_NAME`. No code changes are needed.
-* Check the connection at any time: `python run_project.py status`, or open http://quokka1.quokkacomputing.com/qsim/qasm in a browser (an `ERR_NGROK_3200` page means offline).
+* **Laptop vs Quokka** (asked for by the lecturer): `python run_project.py compare` → `Device_Comparison/results/` (CSV, JSON, charts). Evidence screenshots with date and time: `Device_Comparison/screenshots/`.
+* Check the devices at any time: `python run_project.py status`.
 
 ---
 
@@ -137,20 +146,23 @@ quantumcomputing_YB_Anish/
     │   ├── Original_Quantum_ML_AS2.ipynb      supplied version (unchanged)
     │   ├── Task4_Report_Quantum_ML.docx/.pdf  Task 4 Word document (required)
     │   └── results/                           iteration logs, 2 graphs, comparison
+    ├── Device_Comparison/                     laptop vs Quokka scripts, results/, dated screenshots/
     ├── Alternative_Code/                      a second solution for every task
     │   ├── Task_1_Alt_Qiskit/                 Bell state in Qiskit
     │   ├── Task_2_Alt_Cirq/                   Task 2 circuits in Cirq
     │   ├── Task_3_Alt_Text_Game/              terminal tic-tac-toe (try --demo)
     │   ├── Task_4_Alt_Statevector/            exact classifier + COBYLA optimiser
     │   └── outputs/
-    ├── common/quokka_helper.py                Quokka call, labelled fallback, counts, charts
+    ├── common/quokka_helper.py                device list + failover, labelled fallback, counts, comparison
     ├── Colab_Run_All_Tasks.ipynb              whole project in Google Colab
-    ├── run_project.py                         runner (menu / all / one task / alt)
-    ├── run_project.bat · run_all.bat · run_project.sh
-    ├── quokka_config.json                     which Quokka to use (default quokka1)
+    ├── run_project.py                         runner (menu / all / one task / alt / status / compare)
+    ├── run_project.bat · run_all.bat          Windows double-click
+    ├── run_project.command · run_all.command  macOS double-click
+    ├── run_project.sh                         Linux / macOS terminal
+    ├── quokka_config.json                     Quokka devices, tried in order
     ├── requirements.txt                       exact package versions
     ├── MAINTENANCE.md                         troubleshooting and safe changes
-    └── Report/Assignment2.docx · Assignment2.pdf
+    └── Report/Assignment2.docx · Assignment2.pdf · Reflections/ (two individual reflection reports)
 ```
 
 ---

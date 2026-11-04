@@ -1,0 +1,118 @@
+{
+ "device": "quokka2",
+ "timestamp": "2026-11-04 18:25:42 +1300",
+ "rows": [
+  {
+   "qubits": 2,
+   "target": "this computer",
+   "mean_seconds": 0.066,
+   "mean_server_ms": null,
+   "statevector_MB": 0.0
+  },
+  {
+   "qubits": 2,
+   "target": "quokka2",
+   "mean_seconds": 0.8028,
+   "mean_server_ms": 3.19,
+   "statevector_MB": 0.0
+  },
+  {
+   "qubits": 4,
+   "target": "this computer",
+   "mean_seconds": 0.0683,
+   "mean_server_ms": null,
+   "statevector_MB": 0.0
+  },
+  {
+   "qubits": 4,
+   "target": "quokka2",
+   "mean_seconds": 0.9387,
+   "mean_server_ms": 3.61,
+   "statevector_MB": 0.0
+  },
+  {
+   "qubits": 8,
+   "target": "this computer",
+   "mean_seconds": 0.0785,
+   "mean_server_ms": null,
+   "statevector_MB": 0.004
+  },
+  {
+   "qubits": 8,
+   "target": "quokka2",
+   "mean_seconds": 1.2382,
+   "mean_server_ms": 3.57,
+   "statevector_MB": 0.004
+  },
+  {
+   "qubits": 12,
+   "target": "this computer",
+   "mean_seconds": 0.0738,
+   "mean_server_ms": null,
+   "statevector_MB": 0.066
+  },
+  {
+   "qubits": 12,
+   "target": "quokka2",
+   "mean_seconds": 1.1919,
+   "mean_server_ms": 10.82,
+   "statevector_MB": 0.066
+  },
+  {
+   "qubits": 16,
+   "target": "this computer",
+   "mean_seconds": 0.076,
+   "mean_server_ms": null,
+   "statevector_MB": 1.049
+  },
+  {
+   "qubits": 16,
+   "target": "quokka2",
+   "mean_seconds": 1.1399,
+   "mean_server_ms": 22.32,
+   "statevector_MB": 1.049
+  },
+  {
+   "qubits": 20,
+   "target": "this computer",
+   "mean_seconds": 0.1758,
+   "mean_server_ms": null,
+   "statevector_MB": 16.777
+  },
+  {
+   "qubits": 20,
+   "target": "quokka2",
+   "mean_seconds": 2.0004,
+   "mean_server_ms": 18.86,
+   "statevector_MB": 16.777
+  },
+  {
+   "qubits": 22,
+   "target": "this computer",
+   "mean_seconds": 0.3877,
+   "mean_server_ms": null,
+   "statevector_MB": 67.109
+  },
+  {
+   "qubits": 22,
+   "target": "quokka2",
+   "mean_seconds": 1.5155,
+   "mean_server_ms": 10.63,
+   "statevector_MB": 67.109
+  },
+  {
+   "qubits": 24,
+   "target": "this computer",
+   "mean_seconds": 1.4981,
+   "mean_server_ms": null,
+   "statevector_MB": 268.435
+  },
+  {
+   "qubits": 24,
+   "target": "quokka2",
+   "mean_seconds": 1.6772,
+   "mean_server_ms": 10.76,
+   "statevector_MB": 268.435
+  }
+ ]
+}

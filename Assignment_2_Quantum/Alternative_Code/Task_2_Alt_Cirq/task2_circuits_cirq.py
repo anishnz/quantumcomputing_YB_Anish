@@ -1,7 +1,8 @@
 """
 Task 2 - ALTERNATIVE version: both Task 2 circuits built with Cirq instead of Qiskit/QASM.
 
-Part A: H on q0, X on q1, block C = CNOT(q0 -> q1)  -> Bell state |Psi+> = (|01> + |10>)/sqrt(2)
+Part A: H on q0, X on q1, then block C = CNOT, Z, CNOT, H  (make a Bell pair, flip its phase,
+        read it with a Bell measurement)  -> always '11'
 Part B: our quantum half adder (A, B in superposition; CARRY = A AND B; SUM = A XOR B)
 
 Each circuit is run twice:
@@ -27,14 +28,17 @@ def cirq_counts(circuit, key, n_bits):
 
 
 # ------------------------------------------------------------------ Part A
-banner("Task 2A (alternative): H, X, then C = CNOT, built in Cirq")
+banner("Task 2A (alternative): H, X, then C = CNOT, Z, CNOT, H, built in Cirq")
 q0, q1 = cirq.LineQubit.range(2)
-part_a = cirq.Circuit(cirq.H(q0),            # superposition on the top line
-                      cirq.X(q1),            # bottom line set to |1>
-                      cirq.CNOT(q0, q1),     # block C: q1 = q1 XOR q0
+part_a = cirq.Circuit(cirq.H(q0),            # given: superposition on the top line
+                      cirq.X(q1),            # given: bottom line set to |1>
+                      cirq.CNOT(q0, q1),     # C1: entangle -> |Psi+>
+                      cirq.Z(q0),            # C2: phase flip -> |Psi->
+                      cirq.CNOT(q0, q1),     # C3: Bell measurement, part 1
+                      cirq.H(q0),            # C4: Bell measurement, part 2
                       cirq.measure(q0, q1, key="c"))
 print(part_a)
-print("Cirq simulator counts :", cirq_counts(part_a, "c", 2))          # expect only 01 and 10
+print("Cirq simulator counts :", cirq_counts(part_a, "c", 2))          # expect only 11
 run_a = qh.run_qasm(cirq.qasm(part_a), shots=SHOTS, label="alt_task2a_cirq", save_dir=OUTPUTS)
 print(f"{run_a['source'][:15]:<15} counts :", run_a["counts"])
 

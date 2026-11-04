@@ -1,18 +1,20 @@
 {
   "label": "task1_bell_quokka",
-  "source": "LOCAL SIMULATOR (Qiskit Aer) - Quokka was not reachable",
+  "source": "QUOKKA DEVICE",
+  "device": "quokka2",
   "shots_requested": 1000,
   "shots_received": 1000,
   "counts": {
-    "00": 508,
-    "11": 492
+    "00": 501,
+    "11": 499
   },
   "probs": {
-    "00": 0.508,
-    "11": 0.492
+    "00": 0.501,
+    "11": 0.499
   },
-  "seconds": 0.7617,
-  "timestamp": "2026-10-31T01:38:31",
+  "seconds": 0.6338,
+  "server_time_ms": 3.0644669895991683,
+  "timestamp": "2026-11-04T18:15:32",
   "qasm": "OPENQASM 2.0;\nqreg q[2];\ncreg m_c[2];\nh q[0];\ncx q[0],q[1];\nmeasure q[0] -> m_c[0];\nmeasure q[1] -> m_c[1];\n",
-  "quokka_error": "Quokka endpoint is offline (HTTP 404, ERR_NGROK_3200)"
+  "quokka_error": null
 }
