@@ -1,0 +1,20 @@
+{
+  "checked_at": "2026-11-04 18:01 NZDT",
+  "method": "GET https://<node>.quokkacomputing.com/qsim/ping (official Fleet Status rule) + POST /qsim/qasm Bell circuit",
+  "online": [
+    "quokka2",
+    "quokka3",
+    "quokka4",
+    "quokka5"
+  ],
+  "offline": {
+    "quokka1": "HTTP 404 ERR_NGROK_3200 (endpoint offline)",
+    "quokka6": "HTTP 404 (no device behind the address)",
+    "quokka7": "HTTP 404 (no device behind the address)",
+    "quokka8": "HTTP 404 (no device behind the address)",
+    "quokka9": "HTTP 404 (no device behind the address)",
+    "quokka10": "HTTP 404 (no device behind the address)",
+    "quokka11": "HTTP 404 (no device behind the address)"
+  },
+  "official_status_board": "Quokka Fleet Status widget on quokkacomputing.com/get-started (11 nodes): 4 online, 7 offline at 18:01:26"
+}

@@ -44,8 +44,8 @@ def line(char="="):
 def quokka_status():
     import quokka_helper as qh                               # imported here so 'status' is quick
     status = qh.quokka_status()
-    print(f"Quokka device {qh.QUOKKA_URL}: {status}")
-    if status != "online":
+    print(f"Quokka devices (tried in order {', '.join(qh.QUOKKA_DEVICES)}): {status}")
+    if not status.startswith("online"):                      # no device answered
         print("  -> circuits will run on the local simulator and be labelled LOCAL SIMULATOR")
 
 

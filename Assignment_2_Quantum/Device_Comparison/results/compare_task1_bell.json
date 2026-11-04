@@ -1,0 +1,83 @@
+{
+  "label": "compare_task1_bell",
+  "shots_per_run": 1000,
+  "repeats": 5,
+  "timestamp": "2026-11-04T18:02:47+13:00",
+  "laptop": "Linux-6.18.44-fc-v233-x86_64-with-glibc2.39",
+  "theory": {
+    "00": 0.4999999999999999,
+    "11": 0.4999999999999999
+  },
+  "results": {
+    "local laptop": {
+      "status": "ok",
+      "runs": 5,
+      "mean_seconds": 0.0782,
+      "min_seconds": 0.0658,
+      "max_seconds": 0.0907,
+      "mean_server_ms": null,
+      "counts_total": {
+        "00": 2489,
+        "11": 2511
+      },
+      "tvd_from_theory": 0.0022
+    },
+    "quokka2": {
+      "status": "ok",
+      "runs": 5,
+      "mean_seconds": 0.9544,
+      "min_seconds": 0.7414,
+      "max_seconds": 1.2525,
+      "mean_server_ms": 2.182,
+      "counts_total": {
+        "00": 2529,
+        "11": 2471
+      },
+      "tvd_from_theory": 0.0058
+    },
+    "quokka3": {
+      "status": "ok",
+      "runs": 5,
+      "mean_seconds": 0.8963,
+      "min_seconds": 0.6861,
+      "max_seconds": 1.0035,
+      "mean_server_ms": 2.885,
+      "counts_total": {
+        "00": 2542,
+        "11": 2458
+      },
+      "tvd_from_theory": 0.0084
+    },
+    "quokka4": {
+      "status": "ok",
+      "runs": 5,
+      "mean_seconds": 0.9763,
+      "min_seconds": 0.8013,
+      "max_seconds": 1.337,
+      "mean_server_ms": 2.407,
+      "counts_total": {
+        "00": 2504,
+        "11": 2496
+      },
+      "tvd_from_theory": 0.0008
+    },
+    "quokka5": {
+      "status": "ok",
+      "runs": 5,
+      "mean_seconds": 1.0574,
+      "min_seconds": 0.8508,
+      "max_seconds": 1.216,
+      "mean_server_ms": 2.469,
+      "counts_total": {
+        "00": 2480,
+        "11": 2520
+      },
+      "tvd_from_theory": 0.004
+    },
+    "quokka1": {
+      "status": "offline",
+      "error": "quokka1 endpoint is offline (HTTP 404, ERR_NGROK_3200)"
+    }
+  },
+  "qasm": "OPENQASM 2.0;\nqreg q[2];\ncreg m_c[2];\nh q[0];\ncx q[0],q[1];\nmeasure q[0] -> m_c[0];\nmeasure q[1] -> m_c[1];\n"
+}

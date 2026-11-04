@@ -1,4 +1,11 @@
 {
-  "quokka_name": "quokka1",
-  "_help": "Change quokka_name if your lecturer gives you a different Quokka (e.g. quokka7). The address becomes http://<quokka_name>.quokkacomputing.com/qsim/qasm"
+  "quokka_name": "quokka2",
+  "quokka_devices": [
+    "quokka2",
+    "quokka3",
+    "quokka4",
+    "quokka5",
+    "quokka1"
+  ],
+  "_help": "Devices are tried in this order; if one is down the next is used. Checked 4 Nov 2026: quokka2-5 online, quokka1 HTTP 404. Address = http://<name>.quokkacomputing.com/qsim/qasm"
 }

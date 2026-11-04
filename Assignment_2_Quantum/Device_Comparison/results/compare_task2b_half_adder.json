@@ -1,0 +1,95 @@
+{
+  "label": "compare_task2b_half_adder",
+  "shots_per_run": 1000,
+  "repeats": 5,
+  "timestamp": "2026-11-04T18:03:13+13:00",
+  "laptop": "Linux-6.18.44-fc-v233-x86_64-with-glibc2.39",
+  "theory": {
+    "0000": 0.24999999999999978,
+    "0111": 0.24999999999999983,
+    "1001": 0.24999999999999983,
+    "1010": 0.24999999999999983
+  },
+  "results": {
+    "local laptop": {
+      "status": "ok",
+      "runs": 5,
+      "mean_seconds": 0.0734,
+      "min_seconds": 0.0699,
+      "max_seconds": 0.0818,
+      "mean_server_ms": null,
+      "counts_total": {
+        "0000": 1248,
+        "0111": 1217,
+        "1001": 1262,
+        "1010": 1273
+      },
+      "tvd_from_theory": 0.007
+    },
+    "quokka2": {
+      "status": "ok",
+      "runs": 5,
+      "mean_seconds": 0.9434,
+      "min_seconds": 0.8914,
+      "max_seconds": 0.9831,
+      "mean_server_ms": 3.422,
+      "counts_total": {
+        "0000": 1209,
+        "0111": 1241,
+        "1001": 1307,
+        "1010": 1243
+      },
+      "tvd_from_theory": 0.0114
+    },
+    "quokka3": {
+      "status": "ok",
+      "runs": 5,
+      "mean_seconds": 1.1575,
+      "min_seconds": 0.9376,
+      "max_seconds": 1.4199,
+      "mean_server_ms": 3.292,
+      "counts_total": {
+        "0000": 1261,
+        "0111": 1241,
+        "1001": 1212,
+        "1010": 1286
+      },
+      "tvd_from_theory": 0.0094
+    },
+    "quokka4": {
+      "status": "ok",
+      "runs": 5,
+      "mean_seconds": 1.225,
+      "min_seconds": 0.9021,
+      "max_seconds": 1.8589,
+      "mean_server_ms": 4.279,
+      "counts_total": {
+        "0000": 1262,
+        "0111": 1257,
+        "1001": 1247,
+        "1010": 1234
+      },
+      "tvd_from_theory": 0.0038
+    },
+    "quokka5": {
+      "status": "ok",
+      "runs": 5,
+      "mean_seconds": 0.9372,
+      "min_seconds": 0.8489,
+      "max_seconds": 1.03,
+      "mean_server_ms": 3.298,
+      "counts_total": {
+        "0000": 1294,
+        "0111": 1229,
+        "1001": 1279,
+        "1010": 1198
+      },
+      "tvd_from_theory": 0.0146
+    },
+    "quokka1": {
+      "status": "offline",
+      "error": "quokka1 endpoint is offline (HTTP 404, ERR_NGROK_3200)"
+    }
+  },
+  "qasm": "OPENQASM 2.0;\nqreg q[4];\ncreg c[4];\nh q[0];\nz q[0];\nh q[1];\nrz(1.5707963267948966) q[1];\nh q[2];\ncx q[1],q[2];\nrz(-0.7853981633974483) q[2];\ncx q[0],q[2];\nrz(0.7853981633974483) q[2];\ncx q[1],q[2];\nrz(0.7853981633974483) q[1];\nrz(-0.7853981633974483) q[2];\ncx q[0],q[2];\ncx q[0],q[1];\nrz(0.7853981633974483) q[0];\nrz(-0.7853981633974483) q[1];\ncx q[0],q[1];\nrz(0.7853981633974483) q[2];\nh q[2];\ncx q[0],q[3];\ncx q[1],q[3];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n"
+}

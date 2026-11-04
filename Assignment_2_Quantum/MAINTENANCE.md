@@ -1,7 +1,7 @@
 # MAINTENANCE GUIDE — MSE802 Assessment 2 (Quantum Project)
 
 Group: **Anish Shrestha** (270889991) and **Sandhya Tiwari** (270888992)
-Last updated: 31 October 2026
+Last updated: 4 November 2026
 
 This guide explains how to set up, run, test, update and fix the project.
 
@@ -46,7 +46,9 @@ jupyter notebook
 
 ## 3. How the Quokka connection works
 
-* Address: `http://quokka1.quokkacomputing.com/qsim/qasm` (from the course notebook `quokka_access.ipynb`).
+* Address: `http://<device>.quokkacomputing.com/qsim/qasm`. The official fleet is **quokka1 – quokka11** (Fleet Status board on quokkacomputing.com/get-started).
+* **Device list and failover (4 Nov 2026):** `quokka_config.json` lists the devices in order (`quokka2, quokka3, quokka4, quokka5, quokka1`). If one device is down, `run_on_quokka()` moves to the next. Every result JSON now stores `device` (which Quokka answered) and `server_time_ms` (time inside the Quokka, without the network).
+* Health check: `GET https://<device>.quokkacomputing.com/qsim/ping` answers `{"error": "no error"}` when the device is online.
 * Request: `POST` JSON `{"script": <OpenQASM 2.0>, "count": <shots>}`.
 * Reply: `{"error": "no error", "error_code": 0, "result": {"<register>": [[c0, c1, ...], ...]}}`, one list per shot.
 * `clean_qasm()` removes `include "qelib1.inc";`, comments and `barrier` lines, because Quokka does not have the library.
@@ -67,6 +69,15 @@ If Quokka cannot be reached, `run_qasm()` runs the **same QASM** on Qiskit Aer a
 **Never report a LOCAL SIMULATOR result as a Quokka result.** To forbid the fallback, call `run_qasm(..., allow_fallback=False)`.
 
 On 31 October 2026 the Quokka endpoint replied *"endpoint is offline (ERR_NGROK_3200)"*, so the first saved results are local-simulator results. When Quokka is online again, run `run_all.bat` (or `python run_project.py all`, or the Colab notebook). The results are overwritten with Quokka data and the source label changes to `QUOKKA DEVICE`.
+
+## 4b. Quokka status log
+
+| Date / time (NZ) | Online | Offline | Evidence |
+|---|---|---|---|
+| 30–31 Oct 2026 | none checked except quokka1 | quokka1 (ERR_NGROK_3200) | report Section 2.5 |
+| 4 Nov 2026, 18:01 | quokka2, quokka3, quokka4, quokka5 | quokka1, quokka6–11 | `Device_Comparison/screenshots/`, `results/quokka_status_2026-11-04.json` |
+
+**Laptop vs Quokka comparison:** `python Device_Comparison/compare_laptop_vs_quokka.py` runs the Task 1 and Task 2B circuits (1000 shots × 5 repeats) on the laptop and on every Quokka, and saves JSON, CSV and two charts in `Device_Comparison/results/`.
 
 ## 5. Common problems and fixes
 
@@ -112,3 +123,4 @@ On 31 October 2026 the Quokka endpoint replied *"endpoint is offline (ERR_NGROK_
 | 31 Oct 2026 | Project structure, shared helper, notebooks for Tasks 1–4, custom QASM, maintenance guide |
 | 31 Oct 2026 | Runner (run_project.py/.bat/.sh), alternative code, Colab notebook, GitHub README |
 | 31 Oct 2026 | Quokka gate-set translation, configurable Quokka address, Task 3/4 Word documents, verified references |
+| 4 Nov 2026 | Multi-device list with failover, `device` + `server_time_ms` in results, `quokka_status()` checks every device, `compare_devices()` + Device_Comparison folder (laptop vs Quokka) |

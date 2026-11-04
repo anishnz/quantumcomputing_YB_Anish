@@ -35,26 +35,42 @@ import requests                     # HTTP POST to the Quokka device
 import urllib3                      # silence the warning caused by verify=False (as in the Quokka docs)
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-# ----- Which Quokka to use ---------------------------------------------------------------
-# Default: 'quokka1', the address in the course notebook and in the official "Quokka Start
-# Here" notebook ("default Quokka address (change if you have your own!)").
-# To use a different Quokka WITHOUT editing code, either
-#   * set an environment variable:  QUOKKA_NAME=quokka7   (or the full QUOKKA_URL=...), or
-#   * create quokka_config.json next to run_project.py:  {"quokka_name": "quokka7"}
+# ----- Which Quokka devices to use ------------------------------------------------------
+# Update 4 Nov 2026: quokka1 (the address in the course notebook) now replies HTTP 404,
+# but quokka2, quokka3, quokka4 and quokka5 are online. So the helper keeps a LIST of
+# devices and tries them in order: if one is down it moves to the next one (failover).
+# To change the list WITHOUT editing code, either
+#   * set an environment variable:  QUOKKA_NAME=quokka3   (or the full QUOKKA_URL=...), or
+#   * edit quokka_config.json next to run_project.py:
+#       {"quokka_name": "quokka2", "quokka_devices": ["quokka2", "quokka3", ...]}
 import os as _os
 
+DEFAULT_DEVICES = ["quokka2", "quokka3", "quokka4", "quokka5", "quokka1"]   # tried in this order
 
-def _quokka_url() -> str:
+
+def device_url(name: str) -> str:
+    """Turn a device name such as 'quokka3' into its QASM endpoint."""
+    if name.startswith("http"):                                       # already a full address
+        return name
+    return "http://{}.quokkacomputing.com/qsim/qasm".format(name)
+
+
+def _quokka_devices() -> list:
+    """Ordered list of device names to try (first = preferred device)."""
     if _os.environ.get("QUOKKA_URL"):                                  # full address wins
-        return _os.environ["QUOKKA_URL"]
-    name = _os.environ.get("QUOKKA_NAME")
-    cfg = Path(__file__).resolve().parent.parent / "quokka_config.json"
-    if not name and cfg.exists():
-        name = json.loads(cfg.read_text()).get("quokka_name")
-    return "http://{}.quokkacomputing.com/qsim/qasm".format(name or "quokka1")
+        return [_os.environ["QUOKKA_URL"]]
+    cfg_file = Path(__file__).resolve().parent.parent / "quokka_config.json"
+    cfg = json.loads(cfg_file.read_text()) if cfg_file.exists() else {}
+    devices = list(cfg.get("quokka_devices") or DEFAULT_DEVICES)      # list from the config file
+    first = _os.environ.get("QUOKKA_NAME") or cfg.get("quokka_name")  # preferred device
+    if first:
+        devices = [first] + [d for d in devices if d != first]        # put it at the front
+    return devices
 
 
-QUOKKA_URL = _quokka_url()
+QUOKKA_DEVICES = _quokka_devices()
+QUOKKA_URL = device_url(QUOKKA_DEVICES[0])                            # preferred device address
+_last_device = {"name": None}                                         # which device answered last
 
 DEFAULT_SHOTS = 1000                # the group agreed on 1000 shots for every circuit
 REQUEST_TIMEOUT = 120               # seconds to wait for Quokka before giving up
@@ -145,27 +161,49 @@ def _numeric_angles(qasm_text: str) -> str:
 
 
 # ------------------------------------------------- 2. send to Quokka device
-def run_on_quokka(qasm_text: str, shots: int = DEFAULT_SHOTS) -> dict:
-    """Send one script to Quokka. Returns the decoded JSON reply.
+def run_on_device(qasm_text: str, shots: int, device: str) -> dict:
+    """Send one script to ONE named Quokka device. Returns the decoded JSON reply.
 
     Request format (from the course notebook):
-        POST QUOKKA_URL   json = {"script": <qasm>, "count": <shots>}
+        POST http://<device>.quokkacomputing.com/qsim/qasm   json = {"script": <qasm>, "count": <shots>}
     Reply format:
-        {"error": "no error", "error_code": 0,
+        {"error": "no error", "error_code": 0, "server_time_ms": <time on the device>,
          "result": {"<creg name>": [[bit0, bit1, ...], ...one list per shot]}}
     Raises RuntimeError if the device is offline or replies with an error.
     """
     payload = {"script": to_quokka_gates(qasm_text), "count": int(shots)}
     # verify=False exactly as in the official Quokka notebooks
-    reply = requests.post(QUOKKA_URL, json=payload, timeout=REQUEST_TIMEOUT, verify=False)
+    reply = requests.post(device_url(device), json=payload, timeout=REQUEST_TIMEOUT, verify=False)
     if reply.status_code != 200:                  # e.g. 404 when the endpoint is offline
         if "ERR_NGROK_3200" in reply.text:        # Quokka's tunnel reports this when the device is off
-            raise RuntimeError("Quokka endpoint is offline (HTTP 404, ERR_NGROK_3200)")
-        raise RuntimeError(f"Quokka HTTP {reply.status_code}")
+            raise RuntimeError(f"{device} endpoint is offline (HTTP 404, ERR_NGROK_3200)")
+        raise RuntimeError(f"{device} HTTP {reply.status_code}")
     data = json.loads(reply.content)              # turn the text reply into a dict
     if data.get("error_code", 1) != 0:            # Quokka reports its own errors here
-        raise RuntimeError(f"Quokka error: {data.get('error')}")
+        raise RuntimeError(f"{device} error: {data.get('error')}")
+    data["device"] = device                       # remember which device answered
     return data
+
+
+def run_on_quokka(qasm_text: str, shots: int = DEFAULT_SHOTS) -> dict:
+    """Try each device in QUOKKA_DEVICES until one answers (failover).
+
+    The device that worked last time is tried first, so a long run (Task 4 sends
+    900 circuits) does not waste time on a device that is down.
+    """
+    order = list(QUOKKA_DEVICES)
+    if _last_device["name"] in order:                       # start with the device that worked
+        order.remove(_last_device["name"])
+        order.insert(0, _last_device["name"])
+    errors = []
+    for device in order:
+        try:
+            data = run_on_device(qasm_text, shots, device)
+            _last_device["name"] = device
+            return data
+        except Exception as exc:                            # this device failed -> try the next
+            errors.append(str(exc)[:80])
+    raise RuntimeError("no Quokka device answered: " + " | ".join(errors))
 
 
 # ------------------------------------------ 3. local fallback (same script)
@@ -220,10 +258,13 @@ def run_qasm(qasm_text: str, shots: int = DEFAULT_SHOTS, label: str = "run",
     """
     start = time.perf_counter()                    # start the stopwatch
     error = None
+    device, server_ms = "local laptop", None
     try:
         data = run_on_quokka(qasm_text, shots)
         shot_list = list(data["result"].values())[0]   # first (only) classical register
         source = SOURCE_QUOKKA
+        device = data["device"]                        # e.g. 'quokka2'
+        server_ms = data.get("server_time_ms")         # time spent on the Quokka itself
     except Exception as exc:                       # offline, timeout, bad reply ...
         if not allow_fallback:
             raise
@@ -236,11 +277,13 @@ def run_qasm(qasm_text: str, shots: int = DEFAULT_SHOTS, label: str = "run",
     record = {
         "label": label,
         "source": source,
+        "device": device,
         "shots_requested": shots,
         "shots_received": len(shot_list),
         "counts": counts,
         "probs": counts_to_probs(counts),
-        "seconds": round(seconds, 4),
+        "seconds": round(seconds, 4),                # total time incl. network
+        "server_time_ms": server_ms,                 # Quokka's own processing time
         "timestamp": datetime.now().isoformat(timespec="seconds"),
         "qasm": to_quokka_gates(qasm_text),          # the exact script sent (Quokka gate set)
         "quokka_error": error,
@@ -253,13 +296,89 @@ def run_qasm(qasm_text: str, shots: int = DEFAULT_SHOTS, label: str = "run",
     return record
 
 
-def quokka_status() -> str:
-    """Quick connection test: returns 'online' or a short reason it is offline."""
-    try:
-        run_on_quokka("OPENQASM 2.0;\nqreg q[1];\ncreg c[1];\nmeasure q[0] -> c[0];\n", 1)
-        return "online"
-    except Exception as exc:
-        return f"offline ({str(exc)[:90]})"
+def quokka_status(devices=None) -> str:
+    """Quick connection test of every device. Returns e.g. 'online: quokka2, quokka3 | offline: quokka1'."""
+    test = "OPENQASM 2.0;\nqreg q[1];\ncreg c[1];\nmeasure q[0] -> c[0];\n"
+    online, offline = [], []
+    for device in devices or QUOKKA_DEVICES:
+        try:
+            run_on_device(test, 1, device)
+            online.append(device)
+        except Exception:
+            offline.append(device)
+    if not online:
+        return "offline (no device answered: " + ", ".join(offline) + ")"
+    return "online: " + ", ".join(online) + (" | offline: " + ", ".join(offline) if offline else "")
+
+
+# ------------------------------------------- 5b. laptop vs Quokka comparison
+def compare_devices(qasm_text: str, shots: int = DEFAULT_SHOTS, repeats: int = 5,
+                    devices=None, label: str = "device_comparison", save_dir=None) -> dict:
+    """Run the SAME circuit on the local laptop and on every Quokka device.
+
+    One untimed warm-up run is done first for every target. Then, over `repeats` runs, it records:
+      * wall-clock seconds (what the user waits for; for Quokka this includes the internet)
+      * server_time_ms (time spent inside the Quokka, without the network)
+      * the counts and the TVD from the ideal (theory) distribution
+    The lecturer asked us to compare the outcome and the performance of our laptop and Quokka.
+    """
+    import platform
+    import statistics
+    import qiskit.qasm2
+    from qiskit.quantum_info import Statevector
+
+    script = to_quokka_gates(qasm_text)
+    circ = qiskit.qasm2.loads('OPENQASM 2.0;\ninclude "qelib1.inc";\n' + script.replace("OPENQASM 2.0;\n", ""))
+    ideal = Statevector(circ.remove_final_measurements(inplace=False)).probabilities_dict()
+    ideal = {k: v for k, v in ideal.items() if v > 1e-9}          # theory probabilities
+
+    rows = {}
+    targets = ["local laptop"] + list(devices or QUOKKA_DEVICES)
+    for target in targets:
+        times, server, counts_all, errors = [], [], Counter(), []
+        try:                                                # 1 untimed warm-up run: loads Qiskit /
+            if target == "local laptop":                    # opens the network connection, so the
+                run_locally(script, 10)                     # first timed run is not unfairly slow
+            else:
+                run_on_device(script, 10, target)
+        except Exception:
+            pass
+        for _ in range(repeats):
+            start = time.perf_counter()
+            try:
+                if target == "local laptop":
+                    shot_list = run_locally(script, shots)
+                else:
+                    data = run_on_device(script, shots, target)
+                    shot_list = list(data["result"].values())[0]
+                    server.append(data.get("server_time_ms"))
+            except Exception as exc:
+                errors.append(str(exc)[:80])
+                break
+            times.append(time.perf_counter() - start)
+            counts_all.update(shots_to_counts(shot_list))
+        if not times:
+            rows[target] = {"status": "offline", "error": errors[0] if errors else "no reply"}
+            continue
+        probs = counts_to_probs(dict(counts_all))
+        rows[target] = {
+            "status": "ok",
+            "runs": len(times),
+            "mean_seconds": round(statistics.mean(times), 4),
+            "min_seconds": round(min(times), 4),
+            "max_seconds": round(max(times), 4),
+            "mean_server_ms": round(statistics.mean(server), 3) if server else None,
+            "counts_total": dict(sorted(counts_all.items())),
+            "tvd_from_theory": round(float(total_variation_distance(probs, ideal)), 4),
+        }
+    record = {"label": label, "shots_per_run": shots, "repeats": repeats,
+              "timestamp": datetime.now().astimezone().isoformat(timespec="seconds"),
+              "laptop": platform.platform(), "theory": ideal, "results": rows, "qasm": script}
+    if save_dir is not None:
+        folder = Path(save_dir)
+        folder.mkdir(parents=True, exist_ok=True)
+        (folder / f"{label}.json").write_text(json.dumps(record, indent=2), encoding="utf-8")
+    return record
 
 
 # ------------------------------------------------------ 6. plotting helper
@@ -293,4 +412,5 @@ def plot_comparison(series: dict, title: str, path=None, ylabel="Probability"):
 
 if __name__ == "__main__":
     # Running this file directly gives a quick connection test.
+    print("Devices tried:", ", ".join(QUOKKA_DEVICES))
     print("Quokka status:", quokka_status())
